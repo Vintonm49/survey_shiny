@@ -6,19 +6,8 @@ library(DT)
 library(tidyr)
 library(RColorBrewer)
 
-# for local use
-survey <- read.csv("~/USAREC/ARSOF_all_survey_results.csv", stringsAsFactors = FALSE)
-# for AWS use
-#survey <- read.csv("ARSOF_all_survey_results.csv", stringsAsFactors = FALSE, check.names = FALSE)
 
-
-# survey_dem <- survey[, 1:11]
-# colnames(survey_dem) <- c("rank","rank_coded","gender","age_range","installation","ethnicity",
-#                           "CMF","SORB_installation","profile","marital_status","num_children")
-# survey_dem$rank <- factor(survey_dem$rank, levels = c("PV2", "PFC","SPC","CPL","SGT","SSG","SFC"))
-# survey_dem$CMF <- as.factor(survey_dem$CMF)
-# survey_dem$ethnicity <- factor(survey_dem$ethnicity)
-# levels(survey_dem$ethnicity)[1]<-"AMERICAN INDIAN\n or ALASKAN NATIVE"
+survey <- read.csv("ARSOF_all_survey_results.csv", stringsAsFactors = FALSE, check.names = FALSE)
 
 survey1 <- survey
 colnames(survey1)[1:11] <- c("rank","rank_coded","gender","age_range","installation","ethnicity",
@@ -45,25 +34,7 @@ palette_5 <- c("steelblue", "green3","yellow", "orange", "red3")
 
 
 shinyServer(function(input,output) {
-  ###### read in CSV
-  #datasetInput <- reactive({
-    #infile <- input$file1
-    #if (is.null(infile))
-      #return(NULL)
-    #read.csv(infile$datapath)
-  #})
-  # output$file <- renderTable({
-  #   infile <- input$file1
-  #   survey_df <- read.csv(infile$datapath)
-  #})
-  # output$survey_df_head <- renderTable({
-  #   if(is.null(datasetInput)){
-  #     #File not uploaded yet
-  #     return(NULL)
-  #   }
-  #   survey_df <- datasetInput()
-  #   head(survey_df)
-  # })
+  
   
   ###### Demographics Plot #########
   output$dem_plot <- renderPlot({
@@ -76,16 +47,7 @@ shinyServer(function(input,output) {
                    "SORB Installation" = survey1$SORB_installation,
                    "Marital Status" = survey1$marital_status,
                    "Number of Children" = survey1$num_children)
-    # data1 <- switch(input$var,
-    #                 "Rank"= survey_dem$rank,
-    #                 "Gender" = survey_dem$gender,
-    #                 "Age Range" = survey_dem$age_range,
-    #                 "Ethnicity" = survey_dem$ethnicity,
-    #                 "CMF" = survey_dem$CMF,
-    #                 "SORB Installation" = survey_dem$SORB_installation,
-    #                 "Marital Status" = survey_dem$marital_status,
-    #                 "Number of Children" = survey_dem$num_children)
-    
+  
     #calculate counts and percentages
     data11 <- switch(input$var,
                      "Rank"= "rank",
@@ -230,17 +192,7 @@ shinyServer(function(input,output) {
   ######### Considering plot ########
   output$newjob_plot <- renderPlot({
     considering <- survey1[, c(1:11,36)]
-    
-    # colnames(considering) <- c("rank","rank_coded","gender","age_range","installation","ethnicity",
-    #                            "CMF","SORB_installation","profile","marital_status",
-    #                            "num_children","quest")
-    # considering$rank <- factor(considering$rank, levels = c("PV2", "PFC","SPC","CPL",
-    #                                                        "SGT","SSG","SFC"))
-    # considering$CMF <- as.factor(considering$CMF)
-    # considering$ethnicity <- factor(considering$ethnicity)
-    # levels(considering$ethnicity)[1]<-"AMERICAN INDIAN\n or ALASKAN NATIVE"
-    # considering$num_children <- factor(considering$num_children)
-    # palette_yn = c("red3","steelblue")
+     
     
     data_con2 <- switch(input$con_var,
                        "All" = "all",
